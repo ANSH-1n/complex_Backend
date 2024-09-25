@@ -50,10 +50,11 @@ const userSchema = new mongoose.Schema(
 )
 
 
-//here "pre" hook is using as middleware and don't use arrow function here (REMINDER) and if we are not using the if condition here then it will change the password evertime when we make any chane in the upper fields .so, to remove that problem we can use here if statment with "this.modified(password)" .when the password is modified then only do hashing of that password
+//here "pre" hook is using as middleware and don't use arrow function here (REMINDER) and if we are not using the if condition here then we will change the password everytime when we make any change in the upper fields .so, to remove that problem we can use here if statment with "this.modified(password)" .when the password is modified then only do hashing of that password
+
 userSchema.pre("save",async function(next){
     if(!this.ismodified("password")) return next()
-    this.password = bcrypt.hashSync("this.password",10)
+    this.password = await bcrypt.hashSync("this.password",10)
     next()
 })
 

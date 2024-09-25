@@ -4,7 +4,7 @@
 //2. this is the second method  to handle the route error which uses promises()
 
 const asyncHandler = (requestHandler)=>{
-    (req,res,next) => {
+     return (req,res,next) => {
         promise.resolve(requestHandler(req,res,next)).catch((error) => next(error) )
     }
 }
