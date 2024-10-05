@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
         required : true
     },
     coverImage : {
-        type : string
+        type : String
     },
     watchHistory : [
         {
@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema(
         required : [ true,"Password is required" ],
     },
     refreshToken : {
-        type : string
+        type : String
     }
 
     },{timestamps:true}
@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema(
 
 userSchema.pre("save",async function(next){
     if(!this.ismodified("password")) return next()
-    this.password = await bcrypt.hashSync("this.password",10)
+    this.password =  bcrypt.hashSync("this.password",10)  //10 is a salt here
     next()
 })
 
@@ -92,4 +92,4 @@ userSchema.methods.generateRefreshToken = async function() {
 )
 }
 
-export const User = mongoose.model(User,userSchema )
+export const User = mongoose.model( 'User' , userSchema )

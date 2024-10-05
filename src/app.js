@@ -10,7 +10,7 @@ app.use(cors({
 }))
 
 app.use(express.json({limit : "16kb" })) //it accept and converts  the json file  with 16kb size.
-app.use(express.urlencoded({extended : true, limit : '16kb'})) //it is used to encode the data that comes by url
+app.use(express.urlencoded({extended : true, limit : '16kb'})) //it is used to decode  the data that comes by url
 app.use(express.static("public"))//it helps to store images and files,videos in our local system
 app.use(cookieParser)
 

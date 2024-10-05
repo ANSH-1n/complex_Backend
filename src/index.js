@@ -1,8 +1,4 @@
-// require('dotenv').config({path : './.env'})
 
-// import mongoose from 'mongoose';
-// import {DB_NAME} from '../constants.js';
-// import express from 'express';
 import connectDB from './db/index.js';
 import dotenv from 'dotenv';
 import {app} from './app.js';
@@ -13,8 +9,8 @@ dotenv.config({
 
 connectDB() //bcz we know connectDB variable holds a async function which return promise
 .then(()=>{
-  app.listen(process.env.PORT,()=>{
-    console.log(`server serve at ${process.env.PORT  || 8000}`)
+  app.listen(process.env.PORT,() => {
+    console.log(`server serve at ${process.env.PORT  || 3000}`)
   })
 })
 .catch((error)=>{
