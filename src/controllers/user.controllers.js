@@ -7,22 +7,31 @@ import jwt from "jsonwebtoken"
 import mongoose from "mongoose";
 
 
-const generateAccessAndRefereshTokens = async(userId) =>{
+const generateAccessAndRefereshTokens = async(userId) => {
     try {
+        // Step 1: Find the user by their userId
         const user = await User.findById(userId)
+
+        // Step 2: Generate an access token for the user
         const accessToken = user.generateAccessToken()
+
+        // Step 3: Generate a refresh token for the user
         const refreshToken = user.generateRefreshToken()
 
+        // Step 4: Store the refresh token in the user's document in the database
         user.refreshToken = refreshToken
         await user.save({ validateBeforeSave: false })
 
+        // Step 5: Return both accessToken and refreshToken
         return {accessToken, refreshToken}
 
-
     } catch (error) {
+        // If an error occurs, throw an ApiError with status 500
         throw new ApiError(500, "Something went wrong while generating referesh and access token")
     }
 }
+
+
 
 const registerUser = asyncHandler( async (req, res) => {
     // get user details from frontend
@@ -183,6 +192,9 @@ const logoutUser = asyncHandler(async(req, res) => {
     .json(new ApiResponse(200, {}, "User logged Out"))
 })
 
+
+
+
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
@@ -231,6 +243,9 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 })
 
+
+
+
 const changeCurrentPassword = asyncHandler(async(req, res) => {
     const {oldPassword, newPassword} = req.body
 
@@ -262,6 +277,8 @@ const getCurrentUser = asyncHandler(async(req, res) => {
     ))
 })
 
+
+
 const updateAccountDetails = asyncHandler(async(req, res) => {
     const {fullName, email} = req.body
 
@@ -273,7 +290,7 @@ const updateAccountDetails = asyncHandler(async(req, res) => {
         req.user?._id,
         {
             $set: {
-                fullName,
+                fullName : fullName,
                 email: email
             }
         },
@@ -285,6 +302,9 @@ const updateAccountDetails = asyncHandler(async(req, res) => {
     .status(200)
     .json(new ApiResponse(200, user, "Account details updated successfully"))
 });
+
+
+
 
 const updateUserAvatar = asyncHandler(async(req, res) => {
     const avatarLocalPath = req.file?.path
@@ -425,6 +445,8 @@ const getUserChannelProfile = asyncHandler(async(req, res) => {
         new ApiResponse(200, channel[0], "User channel fetched successfully")
     )
 })
+
+
 
 const getWatchHistory = asyncHandler(async(req, res) => {
     const user = await User.aggregate([
